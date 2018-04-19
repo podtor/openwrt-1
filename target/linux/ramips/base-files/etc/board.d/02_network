@@ -247,6 +247,10 @@ ramips_setup_interfaces()
 		ucidef_add_switch "switch0" \
 			"1:lan:4" "2:lan:3" "3:lan:2" "4:lan:1" "0:wan" "6@eth0"
 		;;
+	dlink,dwr-960)
+		ucidef_add_switch "switch0" \
+			"1:lan" "2:lan" "3:lan" "5:lan" "0:wan" "6@eth0"
+		;;
 	gnubee,gb-pc1|\
 	gnubee,gb-pc2)
 		ucidef_add_switch "switch0" \
@@ -470,7 +474,8 @@ ramips_setup_macs()
 		;;
 	dlink,dwr-116-a1|\
 	dlink,dwr-118-a2|\
-	dlink,dwr-921-c1)
+	dlink,dwr-921-c1|\
+	dlink,dwr-960)
 		wan_mac=$(jboot_config_read -m -i $(find_mtd_part "config") -o 0xE000)
 		lan_mac=$(macaddr_add "$wan_mac" 1)
 		;;
