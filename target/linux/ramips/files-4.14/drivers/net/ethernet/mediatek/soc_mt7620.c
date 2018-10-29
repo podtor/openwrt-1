@@ -129,7 +129,9 @@ static void mt7620_auto_poll(struct mt7620_gsw *gsw)
 		msb = phy;
 	}
 
-	if (lsb == msb)
+	if (lsb == msb && lsb == 0)
+		msb++;
+	else if (lsb == msb)
 		lsb--;
 
 	mtk_switch_w32(gsw, PHY_AN_EN | PHY_PRE_EN | PMY_MDC_CONF(5) |
@@ -242,7 +244,7 @@ static void mt7620_port_init(struct fe_priv *priv, struct device_node *np)
 
 		mtk_switch_w32(gsw, val, GSW_REG_PORT_PMCR(id));
 		fe_connect_phy_node(priv, priv->phy->phy_node[id], id);
-		gsw->autopoll |= BIT(id);
+		gsw->autopoll |= BIT(be32_to_cpup(phy_addr));
 		mt7620_auto_poll(gsw);
 		return;
 	}
